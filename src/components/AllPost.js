@@ -1,5 +1,10 @@
 //src/components/AllPost.js
 import React, { Component } from 'react';
+
+import { connect } from 'react-redux';
+
+
+import Post from './Post'
  
 class AllPost extends Component {
   render() {
@@ -9,12 +14,21 @@ class AllPost extends Component {
         <h3 className="text-center">Все статьи</h3>
       </div>
       <ul className="list-group list-group-flush">
-        <li className="list-group-item">
-        </li>
+        <li className="list-group-item">{this.props.posts.map(post => (
+              <Post key={post.id} post={post} />
+            ))}</li>
       </ul>
     </div>
     );
   }
 }
  
-export default AllPost;
+const mapStateToProps = (state) => {
+
+  console.log(state)
+
+  return {
+      posts: state
+  }
+}
+export default connect(mapStateToProps)(AllPost);

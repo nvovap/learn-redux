@@ -1,16 +1,43 @@
-//src/components/PostForm.js
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { connect } from 'react-redux';
  
 class PostForm extends Component {
+  prevId = 0;
+
+  handleSubmit = event => {
+    event.preventDefault();
+    const title = this.getTitle.value;
+    const message = this.getMessage.value;
+    const data = {
+      id: (this.prevId += 1),
+      title,
+      message
+    };
+    console.log(data)
+
+    this.props.dispatch({
+      type: "ADD_POST",
+      data
+    });
+ 
+    this.getTitle.value = '';
+    this.getMessage.value = '';
+  };
+ 
+ 
+ 
   render() {
+    
     return (
       <div className="card">
         <div className="card-body">
           <h3 className="card-title mb-5 text-center">Создать статью</h3>
-          <form>
+          <form onSubmit={this.handleSubmit}>
             <div className="form-group">
               <input
+                ref={input => this.getTitle = input}
                 required
                 className="form-control"
                 type="text"
@@ -19,6 +46,7 @@ class PostForm extends Component {
             </div>
             <div className="form-group">
               <textarea
+              ref={input => this.getMessage = input}
                 required
                 rows="4"
                 className="form-control"
@@ -32,4 +60,5 @@ class PostForm extends Component {
     );
   }
 }
-export default PostForm;
+
+export default connect()(PostForm);
